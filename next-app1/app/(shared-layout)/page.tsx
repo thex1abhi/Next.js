@@ -6,7 +6,7 @@ export default function Home() {
     <>
 
       <div>Hello from the index page</div>
-      <Link href="/test" > Go to test </Link>
+      {/* <Link href="/test" > Go to test </Link> */}
     </>
   );
 }
