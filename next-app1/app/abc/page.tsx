@@ -4,7 +4,7 @@ export default function AbcPage(){
     return (
         <> 
         <div> hello from abc page </div> 
-        <Link href="/">Go to  home </Link>
+        <Link href="/abc/hello">Go to  hello </Link>
         </>
     )
 }
