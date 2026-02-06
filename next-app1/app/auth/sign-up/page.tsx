@@ -7,14 +7,18 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 
 
 export default function Signup() {
-const router=useRouter();
+    const router = useRouter();
+    const [isPending, startTransition] = useTransition();
+
     const form = useForm({
         resolver: zodResolver(SignUpSchema),
         defaultValues: {
@@ -25,20 +29,25 @@ const router=useRouter();
     })
 
     async function onSubmit(data: z.infer<typeof SignUpSchema>) {
-        await authClient.signUp.email({
-            email: data.email,
-            name: data.name,
-            password: data.password,
-            fetchOptions: {
-                onSuccess: () => {
-                    toast.success("Signup Succcessfull ")
-                    router.push("/auth/login")
-                },
-                onError: (error) => {
-                    toast.error(error.error.message)
+
+        startTransition(async() => {
+            await authClient.signUp.email({
+                email: data.email,
+                name: data.name,
+                password: data.password,
+                fetchOptions: {
+                    onSuccess: () => {
+                        toast.success("Signup Succcessfull ")
+                        router.push("/auth/login")
+                    },
+                    onError: (error) => {
+                        toast.error(error.error.message)
+                    }
                 }
-            }
-        })
+            })
+        }
+        )
+
     }
 
     return (
@@ -78,8 +87,17 @@ const router=useRouter();
                                     )}
                                 </Field>
                             )} />
-                            <Button>SignUp </Button>
-
+                            <Button className="cursor-pointer scale-y-95" disabled={isPending} >
+                                {isPending ? (
+                                    <>
+                                        <Loader2 className="size-4 animate-spin" />
+                                        <span>Loading...</span>
+                                    </>
+                                ) : (
+                                    <span> Signup
+                                    </span>
+                                )}
+                            </Button>
                         </FieldGroup>
 
 
