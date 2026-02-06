@@ -7,12 +7,14 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 
 export default function Signup() {
-
+const router=useRouter();
     const form = useForm({
         resolver: zodResolver(SignUpSchema),
         defaultValues: {
@@ -27,6 +29,15 @@ export default function Signup() {
             email: data.email,
             name: data.name,
             password: data.password,
+            fetchOptions: {
+                onSuccess: () => {
+                    toast.success("Signup Succcessfull ")
+                    router.push("/auth/login")
+                },
+                onError: (error) => {
+                    toast.error(error.error.message)
+                }
+            }
         })
     }
 

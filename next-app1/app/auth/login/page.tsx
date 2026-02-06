@@ -5,24 +5,44 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth-client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import z from "zod";
 
 
 export default function Login() {
+
+    const router = useRouter();
+
     const form = useForm({
         resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
             password: ""
         }
+
     })
 
 
-    async function onSubmit() {
-        console.log("done");
-
+    async function onSubmit(data: z.infer<typeof loginSchema>) {
+        await authClient.signIn.email({
+            email: data.email,
+            password: data.password,
+            fetchOptions: {
+                onSuccess: () => {
+                    toast.success("Login Succcessfull ")
+                    router.push("/test")
+                },
+                onError: (error) => {
+                    toast.error(error.error.message)
+                }
+            }
+        })
     }
+
     return (
         <>
             <div>
