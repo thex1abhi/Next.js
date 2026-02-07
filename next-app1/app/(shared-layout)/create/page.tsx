@@ -39,12 +39,12 @@ export default function CreaterRoute() {
             //     body: values.content,
             //     title: values.title,
             // })
-            // await createBlogAction()
+            // await createBlogAction() 
 
             await fetch('/api/create-blog', {
                 method: "POST",
             })
-
+         
             toast.success("Post created ✔")
             router.push("/")
         })
