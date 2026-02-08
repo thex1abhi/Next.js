@@ -1,15 +1,17 @@
-"use client";
+
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { api } from "@/convex/_generated/api";
+import { fetchQuery } from "convex/nextjs";
 import { useQuery } from "convex/react";
 import Image from "next/image";
 import Link from "next/link";
 
 
-export default function BlogPage() {
-    const data = useQuery(api.posts.getPosts);
+export default async  function BlogPage() { 
+    await new Promise ((resolve)=>setTimeout(resolve,5000));
+    const data = await fetchQuery(api.posts.getPosts);
 
 
 
