@@ -5,7 +5,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { fetchQuery } from "convex/nextjs";
-import { useQuery } from "convex/react";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -66,7 +66,7 @@ function SkeletonLoadingUI() {
     return (
         <div className="grid mt-5 gap-6 md:grid-cols-2 lg:grid-cols-3" >
             {[
-                ...Array(3)].map((_, i) => (<div className="flex flex-col space-y-3 " key={i} >
+                ...Array(6)].map((_, i) => (<div className="flex flex-col space-y-3 " key={i} >
                     <Skeleton className="h-48 w-full rounded-xl" />
                     <div className="space-y-2 flex flex-col " >
                         <Skeleton className="h-6 w-3/4" />
