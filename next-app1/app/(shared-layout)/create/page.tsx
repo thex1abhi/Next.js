@@ -27,6 +27,7 @@ export default function CreaterRoute() {
         defaultValues: {
             title: "",
             content: "",
+            image: undefined,
         }
     })
 
@@ -67,6 +68,22 @@ export default function CreaterRoute() {
                             <Controller name="content" control={form.control} render={({ field, fieldState }) => (
                                 <Field>  <FieldLabel>  Content</FieldLabel>
                                     <Textarea aria-invalid={fieldState.invalid} placeholder="some cool message" {...field} />
+                                    {fieldState.invalid && (
+                                        <FieldError errors={[fieldState.error]} ></FieldError>
+                                    )}
+                                </Field>
+                            )} />
+
+
+                            <Controller name="image" control={form.control} render={({ field, fieldState }) => (
+                                <Field>  <FieldLabel>  Image</FieldLabel>
+                                    <Input aria-invalid={fieldState.invalid} placeholder="Image"
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(event) => {
+                                            const file = event.target.files?.[0]
+                                            field.onChange(file);
+                                        }} />
                                     {fieldState.invalid && (
                                         <FieldError errors={[fieldState.error]} ></FieldError>
                                     )}
