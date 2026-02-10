@@ -9,9 +9,9 @@ import { fetchQuery } from "convex/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
-export const dynamic = 'force-static'
+export const dynamic = 'auto'
 // 'auto' | 'force-dynamic' | 'error' | 'force-static'
-
+export const revalidate = false
 export default function BlogPage() {
 
 
