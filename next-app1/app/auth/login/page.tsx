@@ -38,7 +38,7 @@ export default function Login() {
                 fetchOptions: {
                     onSuccess: () => {
                         toast.success("Login Succcessfull ")
-                        router.push("/test")
+                        router.push("/")
                     },
                     onError: (error) => {
                         toast.error(error.error.message)
