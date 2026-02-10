@@ -40,7 +40,8 @@ async function LoadBlogList() {
             {data?.map((post) => (
                 <Card key={post._id} className="pt-0" >
                     <div className="relative h-48 w-full overflow-hidden " >
-                        <Image src={post.imageUrl  }  alt="error" fill className="rounded-t-lg"
+                        <Image src={post.imageUrl  ?? "https://images.unsplash.com/photo-1770297345796-8de4cf924c08?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8" } 
+                        alt="" fill className="rounded-t-lg"
                 ></Image>
                     </div>
                     <CardContent>
