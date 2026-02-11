@@ -11,7 +11,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 export const dynamic = 'auto'
 // 'auto' | 'force-dynamic' | 'error' | 'force-static'
-export const revalidate = false
+export const revalidate = 30;
 export default function BlogPage() {
 
 
@@ -32,7 +32,7 @@ export default function BlogPage() {
 }
 
 async function LoadBlogList() {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const data = await fetchQuery(api.posts.getPosts);
 
     return (
