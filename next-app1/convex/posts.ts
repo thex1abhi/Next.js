@@ -10,7 +10,7 @@ export const createPost = mutation({
         const user = await authComponent.safeGetAuthUser(ctx)
         if (!user) {
             throw new ConvexError("Not authenticated");
-        }
+        } 
         const blogArticle = await ctx.db.insert("posts", {
             body: args.body,
             title: args.title,
@@ -46,5 +46,32 @@ export const generateImageUploadUrl = mutation({
             throw new ConvexError("Not authenticated");
         }
         return await ctx.storage.generateUploadUrl();
+    }
+})
+
+
+
+export const getPostById = query({
+    args: {
+        postId: v.id("posts")
+    },
+    handler: async (ctx,args) => {
+        const post = await ctx.db.get(args.postId); 
+
+ if(!post){
+    return null ;
+ }
+
+
+        const resolvedImageUrl =
+            post?.imageStorageId !== undefined ?
+                await ctx.storage.getUrl(post.imageStorageId)
+                : null;
+     return { 
+        ...post,
+        imageUrl:resolvedImageUrl,
+
+     }
+
     }
 })
