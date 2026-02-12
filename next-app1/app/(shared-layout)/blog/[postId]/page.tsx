@@ -1,8 +1,10 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CommentSection } from "@/components/Web/CommentSection";
+import { PostPresence } from "@/components/Web/PostPresence";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { getToken } from "@/lib/auth-server";
 import { fetchQuery, preloadQuery } from "convex/nextjs";
 import { ArrowLeft } from "lucide-react";
 import type  { Metadata } from "next";
@@ -15,13 +17,16 @@ interface PostIdRouteProps {
     }>
 }
 
+
+
 export async function generateMetadata({ 
     params,
 }:PostIdRouteProps): Promise< Metadata >
 {
-    const {postId}= await  params;
-    const post=  await fetchQuery(api.posts.getPostById, { postId: postId })
+    const {postId}= await  params; 
 
+
+    const post=  await fetchQuery(api.posts.getPostById, { postId: postId })
 
     if(!post){
         return {
@@ -36,13 +41,15 @@ export async function generateMetadata({
 }
 
 export default async function PostIdRoute({ params }: PostIdRouteProps) {
-    const { postId } = await params;
+    const { postId } = await params; 
+    const token=await getToken()
     //running queries in parallel   
-    const [post, preloadedComments] = await Promise.all([
+    const [post, preloadedComments,userId] = await Promise.all([
         await fetchQuery(api.posts.getPostById, { postId: postId }),
         await preloadQuery(api.comments.getCommentsByPostId, {
             postId: postId,
-        })
+        }) ,
+        await fetchQuery(api.presence.getUserId,{},{token })
     ])
 
 
@@ -67,8 +74,11 @@ export default async function PostIdRoute({ params }: PostIdRouteProps) {
                         className="object-contain hover:scale-105  transition-transform duration-500" />
                 </div>
                 <div>
-                    <h1>{post.title}</h1>
-                    <p>Created On : {new Date(post._creationTime).toLocaleDateString()}  </p>
+                    <h1>{post.title}</h1> 
+                    </div> 
+                    <div>
+                    <p>Created On : {new Date(post._creationTime).toLocaleDateString()}  </p> 
+                   {userId && <PostPresence roomId={post._id} userId={userId} /> }
                 </div>
 
                 <Separator className="my-8" />
