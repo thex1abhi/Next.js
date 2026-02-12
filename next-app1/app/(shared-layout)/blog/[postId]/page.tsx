@@ -1,11 +1,11 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CommentSection } from "@/components/Web/CommentSection";
-
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { fetchQuery, preloadQuery } from "convex/nextjs";
 import { ArrowLeft } from "lucide-react";
+import type  { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,6 +15,25 @@ interface PostIdRouteProps {
     }>
 }
 
+export async function generateMetadata({ 
+    params,
+}:PostIdRouteProps): Promise< Metadata >
+{
+    const {postId}= await  params;
+    const post=  await fetchQuery(api.posts.getPostById, { postId: postId })
+
+
+    if(!post){
+        return {
+            title:"Post not found ",
+        }
+    }
+    return {
+        title:post.title,
+        description:post.body,
+
+    }
+}
 
 export default async function PostIdRoute({ params }: PostIdRouteProps) {
     const { postId } = await params;
@@ -42,7 +61,7 @@ export default async function PostIdRoute({ params }: PostIdRouteProps) {
                 <Link className={buttonVariants({ variant: "outline", className: "mb-4 " })} href="/blog" >
                     <ArrowLeft className="size-4" />Back to Blog
                 </Link>
-                <div className="relative w-full h-[400px] mb-8 rounded-xl overflow-hidden shadow-sm" >
+                <div className="relative w-full h-100 mb-8 rounded-xl overflow-hidden shadow-sm" >
                     <Image src={post.imageUrl ?? "https://images.unsplash.com/photo-1770110000509-6c8298224699?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8"}
                         alt={post.title} fill unoptimized
                         className="object-contain hover:scale-105  transition-transform duration-500" />

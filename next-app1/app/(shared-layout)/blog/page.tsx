@@ -1,5 +1,6 @@
 
-
+import type { Metadata } from 'next'
+ 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,7 +12,17 @@ import Link from "next/link";
 import { Suspense } from "react";
 export const dynamic = 'auto'
 // 'auto' | 'force-dynamic' | 'error' | 'force-static'
-export const revalidate = 30;
+export const revalidate = 30; 
+
+
+export const metadata: Metadata = {
+  title: 'Blog | Next.js 16 Tutorial ',
+  description: 'This is a next.js 16 Tutorial',
+  authors:[{ name:"Abhishek Yadav"}]
+
+}
+
+
 export default function BlogPage() {
 
 
