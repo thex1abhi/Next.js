@@ -10,9 +10,12 @@ import { fetchQuery } from "convex/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
-export const dynamic = 'auto'
+import { connection } from 'next/server';
+import { cacheLife, cacheTag } from 'next/cache';
+
+// export const dynamic = 'force-static'
 // 'auto' | 'force-dynamic' | 'error' | 'force-static'
-export const revalidate = 30; 
+// export const revalidate = 30; 
 
 
 export const metadata: Metadata = {
@@ -42,7 +45,10 @@ export default function BlogPage() {
     )
 }
 
-async function LoadBlogList() {
+async function LoadBlogList() { 
+    "use cache"; 
+    cacheLife("hours")
+    cacheTag("blog")
     await new Promise((resolve) => setTimeout(resolve, 5000));
     const data = await fetchQuery(api.posts.getPosts);
 

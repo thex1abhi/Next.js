@@ -10,6 +10,7 @@ import { ArrowLeft } from "lucide-react";
 import type  { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 interface PostIdRouteProps {
     params: Promise<{
@@ -51,7 +52,10 @@ export default async function PostIdRoute({ params }: PostIdRouteProps) {
         }) ,
         await fetchQuery(api.presence.getUserId,{},{token })
     ])
-
+ 
+    if(!userId){
+        return redirect("/auth/login")
+    }
 
     if (!post) {
         return (
@@ -76,7 +80,7 @@ export default async function PostIdRoute({ params }: PostIdRouteProps) {
                 <div>
                     <h1>{post.title}</h1> 
                     </div> 
-                    <div>
+                    <div className="flex items-center gap-2 " >
                     <p>Created On : {new Date(post._creationTime).toLocaleDateString()}  </p> 
                    {userId && <PostPresence roomId={post._id} userId={userId} /> }
                 </div>
